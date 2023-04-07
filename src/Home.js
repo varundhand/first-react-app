@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import BlogList from "./BlogList";
 
 const Home = () => {
   const [blogs, setBlogs] = useState([
@@ -11,15 +12,27 @@ const Home = () => {
       id: 3,
     },
   ]);
+  const [name, setName] = useState("mario");
+
+  const handleDelete = (id) => {
+    const newBlogs = blogs.filter((blog) => blog.id !== id);
+    setBlogs(newBlogs);
+  };
+
+  useEffect(() => {
+    // this function runs on every re-render i.e. once in the begining and later every time the data or state changes
+    console.log("use effect ran", blogs);
+    console.log(name);
+  }, [name]); // empty DEPENDECY ARRAY ensures that this code only runs in the begining instead of every re-render
 
   return (
     <div className="home">
-      {blogs.map((blog) => (
-        <div className="blog-preview" key={blog.id}>
-          <h2>{blog.title}</h2>
-          <p>Written by {blog.author}</p>
-        </div>
-      ))}
+      <BlogList blogs={blogs} title={"All Blogs"} handleDelete={handleDelete} />
+      {/* <BlogList blogs={blogs.filter((blog) =>blog.author === "varun")}
+        title={"varun's blogs"}
+      />  */}
+      <button onClick={() => setName("luigi")}>change name</button>
+      <p>{name}</p>
     </div>
   );
 };
