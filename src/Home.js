@@ -1,22 +1,25 @@
+import { useState } from "react";
+
 const Home = () => {
-  // const handleClick = () => { // we dont envoke this function below because it runs itself without even clicking the btn
-  //   console.log("button is clicked");
-  // };
-  const handleClick = (event) => {
-    console.log("hello ", "event is: ", event);
-  };
-  const handleClickAgain = (name, event) => {
-    console.log("hello", name, event);
-  };
+  const [blogs, setBlogs] = useState([
+    { title: "My new website", body: "lorem ipsum...", author: "varun", id: 1 },
+    { title: "Welcome party!", body: "lorem ipsum...", author: "john", id: 2 },
+    {
+      title: "My top dev tips",
+      body: "lorem ipsum...",
+      author: "varun",
+      id: 3,
+    },
+  ]);
+
   return (
     <div className="home">
-      <h2>Homepage</h2>
-      <button onClick={handleClick}>Click Me</button>
-      <button
-        onClick={(event) => handleClickAgain("varun dhand", event.target)}
-      >
-        Click me Again
-      </button>
+      {blogs.map((blog) => (
+        <div className="blog-preview" key={blog.id}>
+          <h2>{blog.title}</h2>
+          <p>Written by {blog.author}</p>
+        </div>
+      ))}
     </div>
   );
 };
