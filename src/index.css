@@ -44,3 +44,8 @@ body{
   margin-bottom: 8px;
   /* transition-delay: .05s; */
 }
+.loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
