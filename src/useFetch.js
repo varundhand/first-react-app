@@ -33,7 +33,7 @@ export default function useFetch(url) {
           setIsPending(false);
           setError(err.message);
         });
-    }, 1000);
+    }, 1000); //! we can return an arrow function from useEffect i.e. CLEANUP FUNCTION and that runs when a component unmounts from a page
   }, [url]); // empty DEPENDECY ARRAY ensures that this code only runs in the begining instead of every re-render
   // url in depedency means that this function would run everytime the url is fetched
 

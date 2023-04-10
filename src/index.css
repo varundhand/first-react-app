@@ -40,9 +40,13 @@ body{
 .blog-preview:hover{
   box-shadow: 1px 3px 5px black;
   font-size: 20px;
-  color: #f1356d;
   margin-bottom: 8px;
+  /* color: #f1356d; */
   /* transition-delay: .05s; */
+}
+.blog-preview a{
+  text-decoration: none;
+  color: #f1356d;
 }
 .loading{
   display: flex;
