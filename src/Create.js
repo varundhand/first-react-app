@@ -4,11 +4,28 @@ const Create = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("varun");
+  const [isPending, setIsPending] = useState(false);
+
+  const handleSubmit = async (e) => {
+    setIsPending(true);
+
+    e.preventDefault();
+    const blog = { title, body, author };
+    await fetch("http://localhost:8000/blogs", {
+      // in the second argument of fetch method, we define the type of request and data tacklers
+      method: "POST", // method
+      headers: { "Content-Type": "application/json" }, // json type content is sent to the server
+      body: JSON.stringify(blog), // the data which is sent
+    });
+
+    await console.log("blog data being fetched");
+    setIsPending(false);
+  };
 
   return (
     <div className="create">
       <h2>Create a New Blog</h2>
-      <form action="">
+      <form action="" onSubmit={handleSubmit}>
         <label htmlFor="">Blog Title:</label>
         <input
           type="text"
@@ -36,7 +53,11 @@ const Create = () => {
           <option value="paul">paul</option>
           <option value="george">george</option>
         </select>
-        <button>Add Blog</button>
+        {isPending ? (
+          <button disabled>Adding Blog...</button>
+        ) : (
+          <button>Add</button>
+        )}
       </form>
     </div>
   );
