@@ -1,25 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("varun");
   const [isPending, setIsPending] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     setIsPending(true);
 
-    e.preventDefault();
+    e.preventDefault(); // prevent form from getting submitted i.e. the page will be get re rendered
     const blog = { title, body, author };
+
     await fetch("http://localhost:8000/blogs", {
       // in the second argument of fetch method, we define the type of request and data tacklers
       method: "POST", // method
       headers: { "Content-Type": "application/json" }, // json type content is sent to the server
       body: JSON.stringify(blog), // the data which is sent
     });
-
-    await console.log("blog data being fetched");
+    console.log("blog data being fetched");
     setIsPending(false);
+    navigate("/");
   };
 
   return (

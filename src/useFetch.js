@@ -1,20 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function useFetch(url) {
   // url is to be passed whenever we call useFetch
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
-  useEffect(() => {
-    // this function runs on every re-render i.e. once in the begining and later every time the data or state changes
-    // const fetchData = async function () {
-    //   const response = await fetch("http://localhost:8000/blogs");
-    //   const results = await response.json();
-    //   setBlogs(results)
-    // };
-    // fetchData()
+  function refresh() {
+    setShouldRefresh(true);
+  }
 
+  const fetchBlogs = useCallback(() => {
     setTimeout(() => {
       fetch(url)
         .then((res) => {
@@ -34,8 +31,29 @@ export default function useFetch(url) {
           setError(err.message);
         });
     }, 1000); //! we can return an arrow function from useEffect i.e. CLEANUP FUNCTION and that runs when a component unmounts from a page
-  }, [url]); // empty DEPENDECY ARRAY ensures that this code only runs in the begining instead of every re-render
+  }, [url]);
+
+  useEffect(() => {
+    if (shouldRefresh) {
+      fetchBlogs();
+    }
+
+    return () => {
+      setShouldRefresh(false);
+    };
+  }, [fetchBlogs, shouldRefresh]);
+
+  useEffect(() => {
+    // this function runs on every re-render i.e. once in the begining and later every time the data or state changes
+    // const fetchData = async function () {
+    //   const response = await fetch("http://localhost:8000/blogs");
+    //   const results = await response.json();
+    //   setBlogs(results)
+    // };
+    // fetchData()
+    fetchBlogs();
+  }, [fetchBlogs]); // empty DEPENDECY ARRAY ensures that this code only runs in the begining instead of every re-render
   // url in depedency means that this function would run everytime the url is fetched
 
-  return { data, isPending, error };
+  return { data, isPending, error, refresh };
 }
